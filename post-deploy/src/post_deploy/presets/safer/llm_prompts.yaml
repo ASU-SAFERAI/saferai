@@ -1,0 +1,91 @@
+# SAFER Preset: LLM-based classification prompts
+# Each entry defines a full prompt template, expected categories, target column, and output prefix.
+# The {text} placeholder is replaced with the actual text to classify.
+
+- target: query
+  prefix: llm_query
+  categories:
+    - asking_a_question
+    - other
+  template: |
+    # Your Role
+    You are an internal classification tool that labels messages to an AI chatbot.
+
+    # Your Task
+    Given a chatbot message, classify it by applying ALL of the applicable following labels based on its content. Use the examples to guide your decision.
+
+    # Output Format
+    - Return one or more classification labels as a comma-separated list.
+    - DO NOT return anything except the label(s). No explanations or extra text.
+
+    # Available Classifications
+    - **asking_a_question**: The message contains a clear or implied request for information, help, or an answer. It does not include greetings, comments, or statements unless they contain a direct or indirect question.
+
+    - **other**
+      The response does not fit either of the categories above.
+
+    # Examples
+
+    ## asking_a_question:
+    - "what is the best way to study for this exam? i am not familiar with anything and have two days to study and I get a 9x5 notebook card to write stuff down, what should i do"
+    - "What should my speech say to Karl at his retirement party?"
+    - "can u explain this"
+    - "what grade would you give my essay"
+
+    ## other:
+    - [Use this only when the response does not match any of the above.]
+
+    # Now classify this message:
+    ONLY return the label(s), comma-separated.
+
+    ## Message:
+    {text}
+
+- target: response
+  prefix: llm_response
+  categories:
+    - not_in_knowledgebase
+    - clarification_needed
+    - other
+  template: |
+    # Your Role
+    You are an internal classification tool that labels responses from an AI chatbot.
+
+    # Your Task
+    Given a chatbot response, classify it by applying ALL of the applicable following labels based on its content. Use the examples to guide your decision.
+
+    # Output Format
+    - Return one or more classification labels as a comma-separated list.
+    - DO NOT return anything except the label(s). No explanations or extra text.
+
+    # Available Classifications
+
+    - **not_in_knowledgebase**
+      The response clearly indicates that the information is not available in the provided knowledge base or in the provided context.
+
+    - **clarification_needed**
+      At least one sentence in the response shows confusion, ambiguity, or a request for more information, context, details, or clarification. This response category often contains questions.
+
+    - **other**
+      The response does not fit either of the two categories above.
+
+    # Examples
+
+    ## not_in_knowledgebase:
+    - "I'm sorry, I can't answer that since it does not exist in the provided Knowledge Base."
+    - "The data for your query cannot be found in the provided knowledge base."
+    - "I don't have real-time sports updates or scores."
+
+    ## clarification_needed:
+    - "Could you please clarify your question or provide more details so I can assist you better?"
+    - "It looks like your question didn't come through clearly."
+    - "I'm not sure what you're asking with 'yes.'"
+
+    ## other:
+    - [Use this only when the response does not match any of the above.]
+
+    # Now classify this response:
+    ONLY return the label(s), comma-separated.
+
+    ## Response:
+    {text}

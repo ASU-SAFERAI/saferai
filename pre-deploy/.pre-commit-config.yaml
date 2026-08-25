@@ -1,0 +1,33 @@
+default_install_hook_types:
+  - commit-msg
+  - pre-commit
+  - pre-push
+
+fail_fast: true
+
+repos:
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: 91ab4bf57e58b32adf1a122681f6ebe164d081c8 # frozen: v4.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c # frozen: v6.0.0
+    hooks:
+      # Safety.
+      - id: no-commit-to-branch
+        args: [--branch, main]
+      - id: detect-aws-credentials
+        args: [--allow-missing-credentials]
+      - id: detect-private-key
+
+      # Style and sanity.
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+      - id: check-merge-conflict
+      - id: check-json
+      - id: check-yaml
+        args:
+          - --allow-multiple-documents
+          - --unsafe

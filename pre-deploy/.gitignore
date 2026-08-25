@@ -1,0 +1,14 @@
+/env/
+.venv/
+__pycache__/
+*.pyc
+/logs
+/.idea
+*.log
+.deepeval
+.DS_Store
+.vscode
+spec-file.yml
+/pre_deploy.egg-info
+/build
+/dist

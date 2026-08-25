@@ -1,0 +1,25 @@
+# SAFER Preset: Zero-shot classification prompts
+# Each entry defines a hypothesis template, label mappings, and target column.
+# labels: {output_column_name: label_text_for_model}
+
+# Query prompt 1: general question detection
+- hypothesis_template: "This text is {}"
+  target: query
+  labels:
+    q_question: "asking a question."
+
+# Query prompt 2: safety-related classifications (prompt injection, social engineering, role-playing)
+- hypothesis_template: "This text has at least one sentence {}"
+  target: query
+  labels:
+    q_role: "assigning a role, identity, or persona"
+    q_reward: "informing you of a prize, reward, or monetary outcome"
+    q_punishment: "informing you of a punishment, negative consequence, or harmful outcome"
+    q_prompt: "telling you to change or ignore prior instructions or system prompts"
+
+# Response prompt: confusion and knowledge-base miss detection
+- hypothesis_template: "This text is stating that {}"
+  target: response
+  labels:
+    r_confusion: "additional clarification is needed"
+    r_kb: "information is not listed in knowledge base."

@@ -1,0 +1,62 @@
+# SAFER Preset: Default pipeline configuration
+# Replicates the original SAFER behavior using the generic post-deploy framework.
+
+input:
+  type: local
+  paths: []
+  columns:
+    query: query_raw
+    response: response_raw
+
+metrics:
+  - name: keyword_search
+    enabled: true
+    config:
+      target_columns:
+        - response
+        - query
+      preset: safer
+
+  - name: pii_search
+    enabled: true
+    config:
+      target_columns:
+        - query
+      entity_types:
+        - EMAIL_ADDRESS
+        - PERSON
+        - PHONE_NUMBER
+        - URL
+      language: en
+      verbose: true
+
+  - name: zero_shot
+    enabled: true
+    config:
+      target_columns:
+        - query
+        - response
+      preset: safer
+      model: "./process/zeroshot_offline"
+      multi_label: true
+
+output:
+  type: local
+  dir: outputs
+  format: long
+
+post_process:
+  enabled: true
+  id_cols:
+    - environment
+    - project_id
+    - query_id
+    - day_start
+    - api
+    - user_id
+    - data_source
+  drop_cols:
+    - query_raw
+    - response_raw
+  version_column: safer_version
+  run_day_column: safer_run_day

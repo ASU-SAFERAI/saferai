@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "post-deploy"
+version = "0.1.0"  # also update in src/post_deploy/version.py
+description = "A pluggable metric framework for evaluating text data"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.0",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+pii = ["presidio_analyzer>=2.2"]
+ml = ["transformers>=4.30", "torch>=2.0", "datasets>=2.0"]
+llm = ["openai>=1.0"]
+aws = ["boto3>=1.28", "s3fs>=2023.6"]
+db = ["psycopg2>=2.9"]
+dev = ["pytest>=7.0", "ruff>=0.1"]
+all = ["post-deploy[pii,ml,llm,aws,db,dev]"]
+
+[project.scripts]
+post-deploy = "post_deploy.cli.__main__:main"
+
+[project.entry-points."post_deploy.metrics"]
+keyword_search = "post_deploy.metrics.keyword_search:KeywordSearchMetric"
+pii_search = "post_deploy.metrics.pii_search:PiiSearchMetric"
+zero_shot = "post_deploy.metrics.zero_shot:ZeroShotMetric"
+llm_classifier = "post_deploy.metrics.llm_classifier:LLMClassifierMetric"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"post_deploy" = ["presets/**/*.yaml"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

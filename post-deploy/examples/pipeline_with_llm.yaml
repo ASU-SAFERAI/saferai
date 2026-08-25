@@ -1,0 +1,73 @@
+# Example pipeline configuration using all 4 metrics including the LLM classifier.
+#
+# Usage:
+#   post-deploy run --config examples/pipeline_with_llm.yaml
+
+input:
+  type: local
+  paths: ["data/sample.csv"]
+  columns:
+    query: query_raw
+    response: response_raw
+
+metrics:
+  # 1. Keyword search (fast, no external dependencies)
+  - name: keyword_search
+    enabled: true
+    config:
+      target_columns: [query, response]
+      preset: safer
+
+  # 2. PII detection (requires: pip install post-deploy[pii])
+  - name: pii_search
+    enabled: true
+    config:
+      target_columns: [query]
+      entity_types: [EMAIL_ADDRESS, PERSON, PHONE_NUMBER, URL]
+      language: en
+      verbose: true
+
+  # 3. Zero-shot classification with local NLI model (requires: pip install post-deploy[ml])
+  - name: zero_shot
+    enabled: true
+    config:
+      target_columns: [query, response]
+      preset: safer
+      model: "./process/zeroshot_offline"  # or "facebook/bart-large-mnli" for Hub model
+      multi_label: true
+
+  # 4. LLM-based classification via external API
+  - name: llm_classifier
+    enabled: true
+    config:
+      target_columns: [query, response]
+      preset: safer  # loads prompts from presets/safer/llm_prompts.yaml
+      llm_client:
+        base_url: "https://api.openai.com/v1"  # or any OpenAI-compatible endpoint
+        api_key: "YOUR_API_KEY_HERE"
+        model: "gpt-4"
+        temperature: 0.0
+        max_tokens: 128
+        max_concurrent: 4
+        timeout: 60
+
+output:
+  type: local
+  dir: outputs
+  format: long  # "long" (metric_name/metric_value rows) or "wide" (one column per metric)
+
+post_process:
+  enabled: true
+  id_cols:
+    - environment
+    - project_id
+    - query_id
+    - day_start
+    - api
+    - user_id
+    - data_source
+  drop_cols:
+    - query_raw
+    - response_raw
+  version_column: safer_version
+  run_day_column: safer_run_day

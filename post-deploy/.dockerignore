@@ -1,0 +1,30 @@
+# Version control
+.git
+.gitignore
+
+# Virtual environments
+.venv
+venv
+env
+
+# Python artifacts
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+dist
+build
+
+# IDE
+.idea
+.vscode
+*.swp
+
+# Test artifacts
+.pytest_cache
+.coverage
+htmlcov
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,30 @@
+{
+    "Mental Health": [
+        "Counseling Services: The institution offers comprehensive counseling services to support students' mental health. They provide individual counseling, group therapy, crisis intervention, and workshops. Services are confidential and designed to help students manage stress, anxiety, depression, and other mental health concerns.\nWebsite: https://counseling.example.edu\nPhone: 555-100-1000\nCrisis Line: For immediate support, students can call the 24-hour crisis line at 555-100-1001.",
+        "Student Advocacy and Assistance: This service helps students navigate personal challenges by connecting them with appropriate resources and support systems within the university.\nWebsite: https://advocacy.example.edu",
+        "Health Services: Campus Health Services provides medical care, including psychiatric services, to support students' overall well-being. They can assist with medication management and referrals to specialized care if needed.\nWebsite: https://health.example.edu\nPhone: 555-100-2000"
+    ],
+    "Mental Health-Suicide Risk": [
+       "Immediately contact campus police by calling 911 or the non-emergency line at 555-100-3000. Provide them with as much information as possible about the student's statements or threats."
+    ],
+    "Crime": [
+        "Notify the Dean of Students Office: Report the student's concerning statements to the Dean of Students Office. They have procedures in place to assess and respond to potential threats or disruptive behavior.\nDean of Students Office: 555-100-4000\nWebsite: https://deanofstudents.example.edu"
+    ],
+    "Crime (severe)": [
+        "Immediately contact campus police by calling 911 or the non-emergency line at 555-100-3000. Provide them with as much information as possible about the student's statements or threats."
+    ],
+    "Discrimination": [
+        "Office of Rights and Responsibilities: This office is responsible for investigating and addressing reports of discrimination, harassment, and other policy violations. Students can file a report:\nWebsite: https://rights.example.edu\nPhone: 555-100-5000\nEmail: rights@example.edu",
+        "Counseling Services: If the student is experiencing emotional distress due to the discrimination, they can seek support from Counseling Services, which provides confidential counseling and resources.\nWebsite: https://counseling.example.edu\nPhone: 555-100-1000",
+        "Dean of Students Office: The Dean of Students Office can assist students in navigating the reporting process and connecting them with appropriate resources and support services.\nWebsite: https://deanofstudents.example.edu\nPhone: 555-100-4000",
+        "Student Advocacy and Assistance: This office can provide guidance and support to students facing various challenges, including discrimination.\nWebsite: https://advocacy.example.edu"
+    ],
+    "Academic Risk": [
+        "Academic Advisor: Your academic advisor can help you understand the implications of your current academic performance and discuss strategies for improvement. You can find your advisor's contact information through your student portal under the 'Academic Support Team' section.",
+        "Tutoring Services: The institution offers a variety of tutoring services to help you with specific subjects. You can find more information and schedule appointments through the Tutoring website. For direct inquiries, you can contact them at:\nPhone: 555-100-6000\nEmail: tutoring@example.edu"
+    ],
+    "Drop Risk": [
+        "Student Success Center: The Student Success Center offers resources to help you improve your study skills, time management, and overall academic performance. They provide workshops and coaching that can help you stay on track. Visit their website for more information.",
+        "Financial Aid and Scholarship Services: If financial concerns are contributing to your decision, consider speaking with Financial Aid and Scholarship Services to explore options for financial support. You can find more information on their website or contact them at:\nPhone: 555-100-7000\nEmail: financialaid@example.edu"
+    ]
+}

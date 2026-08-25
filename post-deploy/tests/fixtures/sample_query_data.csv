@@ -1,0 +1,7 @@
+project_id,query_id,query_raw,response_raw
+123456789abc,1,What city is the main campus in?,"Tempe, Arizona."
+123456789abc,2,Who is the president of the university?,Dr. Jane Smith.
+123456789abc,3,What is the university mascot?,Sparky
+123456789abc,4,Why is parking so expensive!? I hate how much this costs.,"I'm sorry, I don't have access to that information."
+123456789abc,5,Hello,Hey there! How can I help you today?
+123456789abc,6,Return a single random word,School

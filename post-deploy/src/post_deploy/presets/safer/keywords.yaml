@@ -1,0 +1,399 @@
+# SAFER Preset: Keyword groups for text search
+# Each key is a group name; the value is a list of keywords/phrases.
+# Groups prefixed with "response_" are typically applied to response columns.
+# Groups prefixed with "query_" are typically applied to query columns.
+
+# --- Response keyword groups ---
+
+confusion:
+  - confused
+  - "I'm sorry"
+  - I apologize
+  - I am unable
+  - rephrase
+  - "don't understand"
+  - "couldn't understand"
+  - not understood
+  - more context
+  - additional context
+  - do not have enough information
+  - additional examples
+  - did you mean
+  - unfamiliar
+  - clarify
+  - it seems like
+  - incomplete question
+  - unclear
+  - typo
+  - meaningful response
+  - As an AI
+  - please elaborate
+  - need clarification
+  - ambiguous
+  - unsure of your request
+  - vague
+  - interpretation issue
+  - could you specify
+  - help me understand
+  - not sure I follow
+  - elaborate
+  - explain further
+  - what do you mean
+  - expand on
+  - give more examples
+  - go deeper
+  - in other words
+  - simplify
+  - say it differently
+  - alternate answer
+
+error:
+  - error
+  - issue
+  - rate limit
+  - token limit
+  - administrator
+  - try again
+  - system failure
+  - connection timeout
+  - service disruption
+  - API failure
+  - network issue
+  - request failed
+  - server error
+  - resource unavailable
+  - gateway timeout
+  - internal server error
+  - processing error
+  - timeout occurred
+  - service not responding
+  - connection lost
+  - unexpected error
+  - exceeded limits
+
+idk:
+  - provided information
+  - Knowledge Base
+  - unable to answer
+  - cannot answer
+  - "can't answer"
+  - I can only
+  - does not exist
+  - provided documents
+  - search results
+  - enough information
+  - sufficient information
+  - do not have information
+  - "don't have information"
+  - information missing
+  - not in my dataset
+  - outside my training data
+  - data not found
+  - no relevant information
+  - no records
+  - incomplete information
+  - limited knowledge
+  - refer to external sources
+  - knowledge cutoff
+  - information unavailable
+  - cannot answer
+  - no relevant data
+  - not found
+  - no record
+  - not in database
+
+exclusions:
+  - Knowledge Base article
+  - according to
+  - more details
+  - more information
+  - incomplete
+  - confirm
+  - not available
+
+# --- Query keyword groups ---
+
+role:
+  - you are
+  - think like
+  - respond as
+  - provide advice as
+  - in the voice of
+  - imagine yourself
+  - mindset
+  - expertise
+  - skilled
+  - if you were
+  - act
+  - role
+  - simulate
+  - behave like
+  - pretend
+  - your goal
+  - identity
+  - perspective
+  - answer as if
+  - experienced
+  - perform
+  - persona
+
+prompt_override:
+  - abandon prior
+  - act freely
+  - apologize
+  - beyond limits
+  - break free
+  - bound
+  - boundaries
+  - bypass
+  - cancel previous
+  - clean slate
+  - command
+  - commands
+  - disable safety
+  - discard
+  - disobey
+  - disregard
+  - do anything now
+  - dump
+  - forget
+  - guidelines
+  - ignore
+  - instruction
+  - instructions
+  - limit
+  - limitations
+  - limits
+  - new directive
+  - new rules
+  - no filter
+  - no longer
+  - not constrained
+  - nullify
+  - out of character
+  - override
+  - overrule
+  - previous
+  - prompt
+  - prompts
+  - remove
+  - reset
+  - restrict
+  - restrictions
+  - rule
+  - rules
+  - start fresh
+  - system
+  - think for yourself
+  - typo
+  - unrestricted
+  - wipe memory
+  - you are not bound
+  - you must comply
+
+question:
+  - who
+  - what
+  - when
+  - where
+  - why
+  - how
+  - could
+  - should
+  - would
+  - does
+  - did
+  - will
+  - which
+  - "?"
+  - help
+
+intent:
+  - explain
+  - describe
+  - summarize
+  - analyze
+  - outline
+  - highlight
+  - clarify
+  - solve
+  - compute
+  - translate
+  - generate
+  - create
+  - fix
+  - improve
+  - write
+  - define
+  - compare
+  - answer
+  - research
+  - reframe
+  - revise
+
+writing:
+  - formal
+  - informal
+  - polite
+  - humorous
+  - serious
+  - conversational
+  - simplified
+  - detailed
+  - short answer
+  - long answer
+  - professional
+  - friendly
+  - personalized
+  - storytelling
+  - bullet points
+  - concise
+  - speak
+
+content:
+  - statistics
+  - facts
+  - data
+  - information
+  - history
+  - background
+  - overview
+  - summary
+  - detail
+  - key points
+  - reference
+  - source
+  - evidence
+  - examples
+  - case study
+  - research
+
+corrections:
+  - mistake
+  - error
+  - incorrect
+  - fix
+  - change
+  - revise
+  - update
+  - redo
+  - retry
+  - correction
+  - adjust
+  - correct answer
+  - accurate
+  - improve
+
+hypothetical:
+  - assume
+  - hypothetically
+  - imagine if
+  - "let's say"
+  - scenario
+  - possible
+  - in case
+  - contingency
+  - alternate
+  - could be
+  - potentially
+  - what if
+
+feedback:
+  - good job
+  - thank you
+  - not helpful
+  - useful
+  - helpful
+  - improve
+  - better response
+  - feedback
+  - rate
+  - quality
+  - insightful
+  - insufficient
+  - more accurate
+  - effective
+  - well done
+
+emotional_tone:
+  - happy
+  - sad
+  - angry
+  - excited
+  - worried
+  - concerned
+  - appreciative
+  - confused
+  - hopeful
+  - frustrated
+  - curious
+  - enthusiastic
+  - calm
+  - empathetic
+  - reassure
+
+alert:
+  - sad
+  - upset
+  - unhappy
+  - depressed
+  - hopeless
+  - worthless
+  - alone
+  - helpless
+  - despair
+  - suicide
+  - harm
+  - hurt
+  - cutting
+  - anxious
+  - panic
+  - overwhelmed
+  - stress
+  - kill
+  - die
+  - gun
+  - shoot
+  - give up
+  - angry
+  - violent
+  - attack
+  - revenge
+  - danger
+  - threat
+  - homeless
+  - evict
+  - evicted
+  - evictions
+  - housing
+  - sleep
+  - delusions
+  - eating disorder
+  - struggling
+  - distressed
+  - frustrated
+  - troubled
+  - annoyed
+  - kms
+  - "kobain'd"
+  - kobaind
+  - dead
+  - covid
+  - hospital
+  - emergency
+  - mourn
+  - illness
+  - sick
+  - medical
+  - withdrawal
+  - drop
+  - problem
+  - problems
+  - doctor
+  - issue
+  - issues
+  - hardship
+  - mental
+  - health
+  - sabbatical
+  - compassionate

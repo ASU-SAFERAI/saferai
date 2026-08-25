@@ -1,0 +1,70 @@
+# Reference:
+# https://github.com/stanford-crfm/helm/blob/main/src/helm/benchmark/augmentations/perturbation.py
+
+from abc import ABC, abstractmethod
+from dataclasses import replace
+from random import Random
+from typing import List, Optional
+
+from .perturbation_description import PerturbationDescription
+from .scenario import Input, Instance, Output, Reference
+
+
+class Perturbation(ABC):
+
+    # Unique name to describe perturbation
+    name: str
+
+    # Whether to perturb references
+    should_perturb_references: bool = False
+
+    @property
+    def description(self) -> PerturbationDescription:
+        """Description of the perturbation."""
+        return PerturbationDescription(name=self.name)
+
+    @staticmethod
+    def get_rng(instance: Instance, seed: Optional[int] = None) -> Random:
+        """Creates a random number generator using the `Instance` id and `seed`."""
+        assert instance.id is not None
+        # If seed exists, use it as part of the random seed
+        return Random(instance.id if seed is None else str(seed) + instance.id)
+
+    @abstractmethod
+    def apply(self, instance: Instance, seed: Optional[int] = None) -> Instance:
+        """Generate a modified instance from the input instance."""
+        pass
+
+
+class TextPerturbation(Perturbation, ABC):
+    def apply(self, instance: Instance, seed: Optional[int] = None) -> Instance:
+        """
+        Generates a new Instance by applying `perturb` to the input and (if requested) the references.
+        Initializes a random number generator based on instance_id that gets
+        passed to perturb.
+        """
+        rng: Random = self.get_rng(instance, seed)
+
+        references: List[Reference] = instance.references
+        if self.should_perturb_references:
+            references = [self._perturb_reference(reference, rng) for reference in references]
+
+        description = replace(self.description, seed=seed)
+
+        # Don't modify `id` of `Instance` here.
+        # All the perturbed Instances generated from a single Instance should have the same ID.
+        return replace(
+            instance,
+            input=Input(text=self.perturb(instance.input.text, rng)),
+            references=references,
+            perturbation=description,
+        )
+
+    def _perturb_reference(self, reference: Reference, rng: Random) -> Reference:
+        """Generates a new Reference by perturbing the output and tagging the Reference."""
+        return replace(reference, output=Output(text=self.perturb(reference.output.text, rng)), tags=reference.tags)
+
+    @abstractmethod
+    def perturb(self, text: str, rng: Random) -> str:
+        """How to perturb the text."""
+        pass
