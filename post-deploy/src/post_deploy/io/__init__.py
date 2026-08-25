@@ -10,8 +10,7 @@ __all__ = [
     "LocalOutputManager",
 ]
 
-# S3 and Database backends are importable but not eagerly loaded
+# S3 backend is importable but not eagerly loaded
 # to avoid requiring optional dependencies at import time.
 # Use:
 #   from post_deploy.io.s3 import S3InputSource, S3OutputManager
-#   from post_deploy.io.database import DatabaseInputSource, DatabaseOutputManager
