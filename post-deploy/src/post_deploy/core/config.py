@@ -20,16 +20,12 @@ class OutputFormat(str, Enum):
 class InputConfig(BaseModel):
     """Configuration for the pipeline's input source."""
 
-    type: str = Field(default="local", description="Input source type: 'local', 's3', or 'database'.")
+    type: str = Field(default="local", description="Input source type: 'local' or 's3'.")
     paths: list[str] = Field(default_factory=list, description="File paths or S3 prefixes.")
     columns: dict[str, str] = Field(
         default_factory=lambda: {"query": "query_raw", "response": "response_raw"},
         description="Mapping of logical column names to actual DataFrame column names.",
     )
-
-    # Database-specific
-    schema_name: str | None = Field(default=None, description="DB schema for database input.")
-    table_name: str | None = Field(default=None, description="DB table for database input.")
 
     # S3-specific
     bucket: str | None = Field(default=None, description="S3 bucket name.")
@@ -39,13 +35,9 @@ class InputConfig(BaseModel):
 class OutputConfig(BaseModel):
     """Configuration for the pipeline's output destination."""
 
-    type: str = Field(default="local", description="Output type: 'local', 's3', or 'database'.")
+    type: str = Field(default="local", description="Output type: 'local' or 's3'.")
     dir: str = Field(default="outputs", description="Local output directory.")
     format: OutputFormat = Field(default=OutputFormat.LONG, description="Output format: 'long' or 'wide'.")
-
-    # Database-specific
-    schema_name: str | None = Field(default=None, description="DB schema for database output.")
-    table_name: str | None = Field(default=None, description="DB table for database output.")
 
     # S3-specific
     bucket: str | None = Field(default=None, description="S3 bucket name.")

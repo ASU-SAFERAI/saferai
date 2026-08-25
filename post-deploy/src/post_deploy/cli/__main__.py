@@ -56,14 +56,6 @@ def build_input_source(config: PipelineConfig):
             bucket=input_cfg.bucket or "",
             prefix=input_cfg.prefix or "",
         )
-    elif input_cfg.type == "database":
-        from post_deploy.io.database import DatabaseInputSource
-
-        # Connection params would come from environment or secrets
-        raise NotImplementedError(
-            "Database input requires connection_params. "
-            "Use the Python API directly for database sources."
-        )
     else:
         raise ValueError(f"Unknown input type: '{input_cfg.type}'")
 
@@ -82,13 +74,6 @@ def build_output_manager(config: PipelineConfig):
         return S3OutputManager(
             bucket=output_cfg.bucket or "",
             prefix=output_cfg.prefix or "output",
-        )
-    elif output_cfg.type == "database":
-        from post_deploy.io.database import DatabaseOutputManager
-
-        raise NotImplementedError(
-            "Database output requires connection_params. "
-            "Use the Python API directly for database destinations."
         )
     else:
         raise ValueError(f"Unknown output type: '{output_cfg.type}'")
@@ -205,7 +190,7 @@ def build_parser() -> argparse.ArgumentParser:
     run_parser.add_argument(
         "--input-type",
         type=str,
-        choices=["local", "s3", "database"],
+        choices=["local", "s3"],
         help="Input source type (overrides config).",
     )
     run_parser.add_argument(

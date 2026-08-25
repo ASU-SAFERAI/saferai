@@ -2,11 +2,6 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Install system dependencies for psycopg2 (if db extra is needed)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq-dev gcc \
-    && rm -rf /var/lib/apt/lists/*
-
 # Copy package files
 COPY pyproject.toml ./
 COPY src/ src/

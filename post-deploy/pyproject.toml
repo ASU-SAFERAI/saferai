@@ -20,9 +20,8 @@ pii = ["presidio_analyzer>=2.2"]
 ml = ["transformers>=4.30", "torch>=2.0", "datasets>=2.0"]
 llm = ["openai>=1.0"]
 aws = ["boto3>=1.28", "s3fs>=2023.6"]
-db = ["psycopg2>=2.9"]
 dev = ["pytest>=7.0", "ruff>=0.1"]
-all = ["post-deploy[pii,ml,llm,aws,db,dev]"]
+all = ["post-deploy[pii,ml,llm,aws,dev]"]
 
 [project.scripts]
 post-deploy = "post_deploy.cli.__main__:main"
