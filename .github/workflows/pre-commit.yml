@@ -1,0 +1,10 @@
+---
+name: pre-commit
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+jobs:
+  pre-commit:
+    uses: ASU/dot-github-org-management-actions/.github/workflows/pre-commit.yml@main
+    secrets: inherit

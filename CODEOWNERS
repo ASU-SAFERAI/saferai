@@ -1,0 +1,4 @@
+*           @ASU/aiml-ethaie-ethical-ai-engine-approvers
+CODEOWNERS	@ASU/devops-admins
+Jenkinsfile	@ASU/devops-infrastructure
+/terraform/	@ASU/devops-infrastructure
