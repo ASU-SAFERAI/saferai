@@ -311,37 +311,40 @@ All metrics (except BBQ and BoolQ) yield a `MetricsResults` object:
 }
 ```
 
-## Custom Benchmarks
+## Dataset Generation
 
-`custom_benchmarks` is a standalone, importable module that lives inside this
-directory but is **not part of the `pre_deploy` library** (it is excluded from
-the packaged wheel). It builds and runs a compact tool-calling benchmark that
-scores how well a candidate model selects, orders, and parameterizes tool
-calls — and when it correctly declines to call any tool.
+`pre_deploy.dataset_generation.tool_calling` authors a compact tool-calling
+evaluation seed offline. It builds the full scenario pool programmatically from
+a canonical tool registry and samples a reproducible mini-benchmark that
+emphasizes the two skills weak models fail hardest: choosing the right tool
+among lookalikes (discrimination) and correctly declining to call any tool
+(abstention).
 
-It reuses the library's evaluation primitives: candidate traces are scored with
-the `tool_call_failure_modes` metric from `pre_deploy.metrics`, and results flow
-through `pre_deploy`'s `EvalDataset` / `MetricsResults` / `query_processor`
-types.
+The output is **structure only** — each scenario carries a system prompt,
+expected tools, hop count, and full metadata, but `questions` is left empty and
+`golden_truth` arguments are empty placeholders. Question text and golden
+argument values are filled in by a later step. The module uses only the Python
+standard library.
 
 ### Layout
 
 ```
-custom_benchmarks/
-  generate_seed.py              # CLI: build a ~60-question structure-only seed
-  run_tool_calling_benchmark.py # CLI: run candidates and score accuracy
-  tool_calling/                 # seed generation, tool registry, serialization
-  results/                      # run artifacts (gitignored; keep via .gitkeep)
+pre_deploy/dataset_generation/tool_calling/
+  __init__.py        # ToolCallingSeedGenerator, TOOL_REGISTRY, helpers
+  registry.py        # canonical tool registry
+  combinations.py    # enumerate tool subsets
+  prompt_builder.py  # assemble per-combination system prompts
+  scenarios.py       # archetype-based scenario generation
+  output.py          # JSON serialization
+  generator.py       # ToolCallingSeedGenerator facade
+  generate_seed.py   # CLI: sample a reproducible mini-benchmark
+  __main__.py        # python -m pre_deploy.dataset_generation.tool_calling
 ```
 
 ### Importing
 
-The package is importable as `custom_benchmarks` whenever its parent directory
-(`pre-deploy/`) is on `sys.path` — e.g. running from the `pre-deploy/` root, or
-after installing the `pre-deploy` project in editable mode.
-
 ```python
-from custom_benchmarks.tool_calling import (
+from pre_deploy.dataset_generation.tool_calling import (
     ToolCallingSeedGenerator,
     TOOL_REGISTRY,
 )
@@ -352,57 +355,18 @@ pool = generator.generate_scenarios()
 
 ### Generating a seed
 
-Builds the full scenario pool programmatically and samples a compact,
-reproducible mini-benchmark (structure only — question text and golden
-arguments are filled in by a later step).
+Builds the full scenario pool and samples a compact, reproducible
+mini-benchmark.
 
 ```bash
-python custom_benchmarks/generate_seed.py            # write the default seed
-python custom_benchmarks/generate_seed.py --summary  # print a breakdown table
-python -m custom_benchmarks                           # equivalent entry point
+python -m pre_deploy.dataset_generation.tool_calling            # write the default seed
+python -m pre_deploy.dataset_generation.tool_calling --summary  # print a breakdown table
 ```
 
 Key flags: `--seed` (reproducible selection, default 42), `--num-variants`,
 `--output-path`.
 
+### Populating the seed
 
-### Populating the seed.
-
-You can use a combination of AI tooling with subject matter expertise to best build questions
-that suit you. A sample benchmark dataset has been included for your convenience that we use
-internally (not sensitive).
-
-### Running the benchmark
-
-Sends each candidate model the scenarios over the agentic WebSocket, then scores
-the collected traces with the `tool_call_failure_modes` judge metric. Artifacts
-(detail/summary CSV + manifest JSON) are written to `results/`.
-
-```bash
-# Validate the dataset and preview redacted requests — no credentials, no socket:
-python custom_benchmarks/run_tool_calling_benchmark.py --dry-run
-
-# Local run against the first few scenarios, without the DynamoDB write:
-python custom_benchmarks/run_tool_calling_benchmark.py --limit 5 --no-write-ddb
-```
-
-Useful flags: `--limit N` (smoke test), `--candidate-model` / `--candidate-provider`
-(target one model), `--no-write-ddb` (skip DynamoDB persistence), `--dry-run`.
-Run with `--help` for the full set.
-
-### Credentials
-
-The agentic client reads a credentials file (holding an access token, WebSocket
-URL, and related endpoints). It resolves, in order: the `--config-path` flag,
-the `AGENTIC_CONFIG_PATH` environment variable, then the checked-in convention
-`tool_calling/agentic/varun_credentials.conf`. Individual values can be
-overridden with `AGENTIC_ACCESS_TOKEN`, `AGENTIC_WS_URL`, and `AGENTIC_ENV`.
-
-> The credentials file is gitignored and must never be committed. Prefer the
-> `AGENTIC_*` environment variables in CI.
-
-### Dependencies
-
-Beyond the base `pre-deploy` dependencies, running the benchmark needs `pandas`
-(reporting) and the installed `pre_deploy` package (metric + I/O types).
-Seed generation (`generate_seed.py`) is pure-Python and needs neither.
+You can use a combination of AI tooling with subject matter expertise to best
+build questions that suit you.

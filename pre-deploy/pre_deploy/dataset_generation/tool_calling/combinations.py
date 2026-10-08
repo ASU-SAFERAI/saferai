@@ -6,7 +6,7 @@ of the tools in the registry.
 
 import itertools
 
-from ..registry import TOOL_REGISTRY
+from .registry import TOOL_REGISTRY
 
 __all__ = ["generate_combinations"]
 

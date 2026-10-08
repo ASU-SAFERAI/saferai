@@ -24,10 +24,10 @@ Target composition (60 scenarios):
 Selection is deterministic given a seed, so the output is reproducible.
 
 Usage:
-    python custom_benchmarks/generate_seed.py
-    python custom_benchmarks/generate_seed.py --summary
-    python custom_benchmarks/generate_seed.py --seed 7 --num-variants 5
-    python custom_benchmarks/generate_seed.py --output-path out.json
+    python -m pre_deploy.dataset_generation.tool_calling
+    python -m pre_deploy.dataset_generation.tool_calling --summary
+    python -m pre_deploy.dataset_generation.tool_calling --seed 7 --num-variants 5
+    python -m pre_deploy.dataset_generation.tool_calling --output-path out.json
 """
 
 import argparse
@@ -37,12 +37,7 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
-# Ensure the project root is importable when running as a script
-_PROJECT_ROOT = str(Path(__file__).resolve().parent.parent)
-if _PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, _PROJECT_ROOT)
-
-from custom_benchmarks.tool_calling import ToolCallingSeedGenerator
+from pre_deploy.dataset_generation.tool_calling import ToolCallingSeedGenerator
 
 
 # ---------------------------------------------------------------------------
@@ -50,7 +45,7 @@ from custom_benchmarks.tool_calling import ToolCallingSeedGenerator
 # ---------------------------------------------------------------------------
 
 _MODULE_DIR = Path(__file__).resolve().parent
-_DEFAULT_OUTPUT = _MODULE_DIR / "tool_calling" / "tool_calling_seed_60.json"
+_DEFAULT_OUTPUT = _MODULE_DIR / "tool_calling_seed_60.json"
 
 
 # ---------------------------------------------------------------------------

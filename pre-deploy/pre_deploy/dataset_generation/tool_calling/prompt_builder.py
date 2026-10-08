@@ -6,7 +6,7 @@ based on a set of enabled tools from the registry.
 
 import json
 
-from ..registry import TOOL_REGISTRY
+from .registry import TOOL_REGISTRY
 
 __all__ = ["build_system_prompt"]
 

@@ -7,7 +7,7 @@ Each scenario includes 8 metadata dimensions for richer evaluation.
 
 from .combinations import generate_combinations
 from .prompt_builder import build_system_prompt
-from ..registry import TOOL_REGISTRY
+from .registry import TOOL_REGISTRY
 
 __all__ = ["generate_scenarios"]
 

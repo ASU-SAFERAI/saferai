@@ -6,12 +6,12 @@ It delegates to focused submodules for registry, prompt building, combination
 generation, scenario generation, and output serialization.
 
 Primary interface is programmatic (import and instantiate). CLI execution is supported
-via `python custom_benchmarks/generate_seed.py`.
+via `python -m pre_deploy.dataset_generation.tool_calling`.
 
 Uses only Python standard library — no external dependencies required.
 """
 
-from ..registry import TOOL_REGISTRY
+from .registry import TOOL_REGISTRY
 from .prompt_builder import build_system_prompt as _build_system_prompt
 from .combinations import generate_combinations as _generate_combinations
 from .scenarios import generate_scenarios as _generate_scenarios
@@ -114,8 +114,8 @@ class ToolCallingSeedGenerator:
         ----------
         output_path : str, optional
             Path to write the output file. Defaults to
-            `custom_benchmarks/tool_calling/tool_calling_seed.json` relative
-            to the module's location.
+            `tool_calling_seed.json` in the ``tool_calling`` package
+            directory.
 
         Returns
         -------
