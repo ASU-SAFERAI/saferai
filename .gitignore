@@ -1,1 +1,86 @@
 .DS_Store
+
+# ---------------------------------------------------------------------------
+# Security: secrets, credentials, and sensitive config
+# These should never be committed. Keep real values out of version control
+# and commit sanitized *.example / *.template files instead.
+# ---------------------------------------------------------------------------
+
+# Environment / dotenv files
+.env
+.env.*
+*.env
+!.env.example
+!.env.template
+!.env.sample
+
+# Generic secret / credential files
+secrets.*
+*secret*
+*secrets*
+credentials
+credentials.*
+*credentials*
+*.credentials
+
+# Config files that commonly hold secrets
+*.conf
+*.cfg
+*.ini
+config.local.*
+*.local.yaml
+*.local.yml
+*.local.json
+settings.local.*
+
+# Private keys, certificates, keystores
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.der
+*.crt
+*.cer
+*.csr
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+*_rsa
+*_dsa
+*.ppk
+
+# Cloud / provider credentials
+.aws/
+aws.json
+.azure/
+gcp-*.json
+*service-account*.json
+.gcloud/
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+
+# Tokens and auth
+.npmrc
+.pypirc
+.netrc
+*.token
+.htpasswd
+
+# SSH / GPG
+.ssh/
+*.gpg
+*.asc
+
+# Database dumps / backups (may contain sensitive data)
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.bak
