@@ -24,7 +24,7 @@ TOOL_REGISTRY: dict = {
             }
         ],
         "optional_parameters": [],
-        "endpoint": "https://search.asu.edu/api/v1/webdir-profiles/faculty-staff/filtered",
+        "endpoint": None,
         "return_schema": [
             {
                 "name": "results",
