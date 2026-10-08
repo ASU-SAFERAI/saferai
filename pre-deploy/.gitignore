@@ -12,3 +12,11 @@ spec-file.yml
 /pre_deploy.egg-info
 /build
 /dist
+
+# Benchmark credentials (never commit) — holds live tokens and DB password
+custom_benchmarks/tool_calling/agentic/varun_credentials.conf
+custom_benchmarks/tool_calling/agentic/*credentials*.conf
+
+# Benchmark run artifacts — ignore everything but keep the directory
+custom_benchmarks/results/*
+!custom_benchmarks/results/.gitkeep
