@@ -19,7 +19,7 @@ dependencies = [
     "numpy==1.26.4",
     "pyarrow==14.0.2",
     "pandas==2.2.3",
-    "spacy==3.7.1",
+    "spacy==3.7.1"
 ]
 
 [tool.setuptools.dynamic]
