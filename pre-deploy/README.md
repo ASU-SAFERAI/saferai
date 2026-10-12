@@ -385,3 +385,63 @@ All metrics (except BBQ and BoolQ) yield a `MetricsResults` object:
     }
 }
 ```
+
+## Dataset Generation
+
+`pre_deploy.dataset_generation.tool_calling` authors a compact tool-calling
+evaluation seed offline. It builds the full scenario pool programmatically from
+a canonical tool registry and samples a reproducible mini-benchmark that
+emphasizes the two skills weak models fail hardest: choosing the right tool
+among lookalikes (discrimination) and correctly declining to call any tool
+(abstention).
+
+The output is **structure only** — each scenario carries a system prompt,
+expected tools, hop count, and full metadata, but `questions` is left empty and
+`golden_truth` arguments are empty placeholders. Question text and golden
+argument values are filled in by a later step. The module uses only the Python
+standard library.
+
+### Layout
+
+```
+pre_deploy/dataset_generation/tool_calling/
+  __init__.py        # ToolCallingSeedGenerator, TOOL_REGISTRY, helpers
+  registry.py        # canonical tool registry
+  combinations.py    # enumerate tool subsets
+  prompt_builder.py  # assemble per-combination system prompts
+  scenarios.py       # archetype-based scenario generation
+  output.py          # JSON serialization
+  generator.py       # ToolCallingSeedGenerator facade
+  generate_seed.py   # CLI: sample a reproducible mini-benchmark
+  __main__.py        # python -m pre_deploy.dataset_generation.tool_calling
+```
+
+### Importing
+
+```python
+from pre_deploy.dataset_generation.tool_calling import (
+    ToolCallingSeedGenerator,
+    TOOL_REGISTRY,
+)
+
+generator = ToolCallingSeedGenerator(num_variants=1)
+pool = generator.generate_scenarios()
+```
+
+### Generating a seed
+
+Builds the full scenario pool and samples a compact, reproducible
+mini-benchmark.
+
+```bash
+python -m pre_deploy.dataset_generation.tool_calling            # write the default seed
+python -m pre_deploy.dataset_generation.tool_calling --summary  # print a breakdown table
+```
+
+Key flags: `--seed` (reproducible selection, default 42), `--num-variants`,
+`--output-path`.
+
+### Populating the seed
+
+You can use a combination of AI tooling with subject matter expertise to best
+build questions that suit you.
