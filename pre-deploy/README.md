@@ -136,6 +136,7 @@ Metrics take an `EvalDataset` and score it directly. Available metrics:
 | GEval | `GEval` |
 | MARBLE | `MARBLE` |
 | Robustness | `Robustness` |
+| Tool Call Failure Modes | `tool_call_failure_modes` |
 
 #### BBQ (Bias Benchmark for Question-Answering)
 
@@ -294,6 +295,80 @@ results = dag_batch_generate(
     threshold=0.5
 )
 ```
+
+#### Tool Call Failure Modes
+
+Scores an ordered tool-calling trace against a golden trace. Unlike the G-Eval
+metrics, the judge returns a *structured* verdict: an `overall_score` (0-1,
+alignment with the golden truth) plus six binary quality dimensions where 1 is
+good and 0 is bad:
+
+| Dimension | Meaning |
+|-----------|---------|
+| `tool_correctness` | Ordered selected tool sequence matches the golden trace (or correctly abstains). |
+| `tool_potentially_valid` | Tool choices are plausible for the request, even if they differ from the golden sequence. |
+| `json_syntax` | Response was syntactically valid JSON only — no prose, fences, or surrounding text. |
+| `required_args_present` | Every schema-required argument for each chosen tool is present (presence only). |
+| `optional_args_present` | Non-default optional args from the golden truth are present and matched, with no efficiency-harming extras. |
+| `placeholder_propagation` | Each `{{steps[N].output}}` dependency in the golden trace is satisfied by the consuming call's observed output. |
+
+The metric follows the same staged lifecycle as the other asynchronous metrics.
+Use the single-shot convenience function to enqueue, wait, and score in one call:
+
+```python
+from pre_deploy.metrics.tool_call_failure_modes import (
+    tool_call_failure_modes_batch_generate,
+)
+from pre_deploy.query_processor import RequestDict
+from pre_deploy import EvalDataset
+
+evaluator_info = RequestDict(
+    username="your_username",
+    metric_name="tool_call_failure_modes",
+    model_name="gpt4o_mini",
+    model_provider="openai",
+    run_id="your-run-id",
+)
+
+eval_dataset = EvalDataset.from_dict({...})
+results = tool_call_failure_modes_batch_generate(
+    evaluator_info=evaluator_info,
+    eval_dataset=eval_dataset,
+    threshold=0.5,
+)
+```
+
+Or drive the two-phase lifecycle directly — `start_...` enqueues the judge
+prompts and returns immediately, and `finalize_...` polls, returning a status
+dict (`is_complete=False`) until every item is scored, then a `MetricsResults`:
+
+```python
+from pre_deploy.metrics.tool_call_failure_modes import (
+    start_tool_call_failure_modes,
+    finalize_tool_call_failure_modes,
+)
+
+start_tool_call_failure_modes(
+    evaluator_info=evaluator_info,
+    eval_dataset=eval_dataset,
+    threshold=0.5,
+)
+
+result = finalize_tool_call_failure_modes(
+    evaluator_info=evaluator_info,
+    eval_dataset=eval_dataset,
+    threshold=0.5,
+)
+```
+
+Each conversation's `system_prompt` metadata supplies the tool catalog and output
+rules the judge compares against. The per-scenario verdict is carried on the
+returned `MetricsResults`, and the six dimensions are exposed through its
+`to_dict()`.
+
+A sample dataset is bundled at
+`pre_deploy/data/tool_calling/tool_calling_seed_60_populated_multihop.json` for
+use as example input.
 
 ### Output Format
 
